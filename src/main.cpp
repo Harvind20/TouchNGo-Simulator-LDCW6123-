@@ -4,7 +4,14 @@
 using namespace std;
 
 int main(){
-	cout << "Hello\n";
+	cout << setfill('#') << setw(40) << "\n";
+	cout << setfill(' ') << setw(31) <<"Touch N' Go Simulator\n";
+	cout << setfill('#') << setw(40) << "\n";
+	cout << setfill (' ');
+	cout << "What would you like to do today?\n";
+	cout << "1. Pay" << setw(20) << "2. Top Up\n";
+	cout << "3. Receive" << setw(14) << "4. Exit\n";
+
 	string option;
 
 	while (option != "4"){
@@ -25,11 +32,11 @@ int main(){
 					cout << "Exit\n";
 					break;
 				default:
-					cout << "Invalid Option\n";
+					cout << "\u001b[1;31mInvalid Option\n\u001b[0m";
 					break;
 			}
 		}
-		catch(invalid_argument){cout << "Invalid Option\n";}
+		catch(invalid_argument){cout << "\u001b[1;31mInvalid Option\n\u001b[0m";}
 
 	}
 }
