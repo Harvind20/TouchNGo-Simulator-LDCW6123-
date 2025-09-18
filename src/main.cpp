@@ -46,16 +46,18 @@ int main(){
 }
 
 void payByPhone(int& bal){
-	int phoneNumber,amount;
-	string reference;
+	string pNum,amt,reference;
 	cout << "Input: \n";
 	cout << "Phone Number: ";
-	cin >> phoneNumber;
+	cin >> pNum;
 	cout << "Amount: ";
-	cin >> amount;
+	cin >> amt;
 	cout << "Reference: ";
 	cin.ignore();
 	getline(cin,reference);
+
+	int phoneNumber = stoi(pNum);
+	int amount = stoi(amt);
 
 	if (amount < 0){
 		cout << "\u001b[1;31mInvalid Amount\n\u001b[0m";
@@ -63,18 +65,18 @@ void payByPhone(int& bal){
 		return;
 	}
 	if (bal >= amount){
-		cout << "Payment Success!\n";
+		cout << "\u001b[1;32mPayment Success!\u001b[0m\n";
 		cout << "Paid " << amount << " for " << reference << endl;
 	}
 	else{
-		cout << "Payment Failed! Not enough money in your account.\n";
+		cout << "\u001b[1;31mPayment Failed!\u001b[0m Not enough money in your account.\n";
 		return;
 	}
 
 	bal -= amount;
 	cout << "Balance: RM" << bal << endl;
 	if (bal <= 10){
-		cout << "Warning! Account balance is low. Consider topping up.\n";
+		cout << "\u001b[1;33mWarning!\u001b[0m Account balance is low. Consider topping up.\n";
 	}
 	return;
 }
