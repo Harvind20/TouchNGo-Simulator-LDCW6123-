@@ -4,26 +4,26 @@
 using namespace std;
 
 void payByPhone(int& bal);
+void payment(int& bal);
 
 int main(){
-	cout << setfill('#') << setw(40) << "\n";
-	cout << setfill(' ') << setw(31) <<"Touch N' Go Simulator\n";
-	cout << setfill('#') << setw(40) << "\n";
-	cout << setfill (' ');
-	cout << "What would you like to do today?\n";
-	cout << "1. Pay" << setw(20) << "2. Top Up\n";
-	cout << "3. Receive" << setw(14) << "4. Exit\n";
-
 	string option;
 	int balance = 50;
 
 	while (option != "4"){
+		cout << setfill('#') << setw(40) << "\n";
+		cout << setfill(' ') << setw(31) <<"Touch N' Go Simulator\n";
+		cout << setfill('#') << setw(40) << "\n";
+		cout << setfill (' ');
+		cout << "What would you like to do today?\n";
+		cout << "1. Pay" << setw(20) << "2. Top Up\n";
+		cout << "3. Receive" << setw(14) << "4. Exit\n";
 		cin >> option;
 		try{
 			int choice = stoi(option);
 			switch (choice){
 				case 1:
-					payByPhone(balance);
+					payment(balance);
 					break;
 				case 2:
 					cout << "Top Up\n";
@@ -43,6 +43,32 @@ int main(){
 		catch(invalid_argument){cout << "\u001b[1;31mInvalid Option\n\u001b[0m";cout << "Please select the offered options.\n";}
 	}
 	return 0;
+}
+
+void payment(int& bal){
+	string option;
+	cout << "Select your payment method:\n";
+	cout << "1. Pay by Phone Number" << setw(23) << "2. Pay by QR\n";
+	cout << "3. Pay Toll" << setw(29) << "4. Back\n";
+	cin >> option;
+	int method = stoi(option);
+	switch (method){
+		case 1:
+			cout << "Pay by phone\n";
+			break;
+		case 2:
+			cout << "QR\n";
+			break;
+		case 3:
+			cout << "Toll\n";
+			break;
+		case 4:
+			break;
+		default:
+			cout << "\u001b[1;31mInvalid Option\n\u001b[0m";
+			cout << "Please select the offered options.\n";
+			break;
+	}
 }
 
 void payByPhone(int& bal){
