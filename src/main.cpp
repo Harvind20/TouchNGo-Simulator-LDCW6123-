@@ -3,6 +3,7 @@
 #include <string>
 #include <chrono>
 #include <thread>
+#include <random>
 using namespace std;
 
 void payByPhone(double& bal);
@@ -12,6 +13,10 @@ void payByToll(double& bal);
 void topUp(double& bal);
 void topUpByBank(double& bal);
 bool topUpByCard(double& bal);
+void receive(double& bal);
+void receiveAny(double& bal);
+void receiveFixed(double& bal);
+void receiveByQR(double& bal);
 
 int main(){
 	string option;
@@ -37,7 +42,7 @@ int main(){
 					topUp(balance);
 					break;
 				case 3:
-					cout << "Receive\n";
+					receive(balance);
 					break;
 				case 4:
 					cout << "Exit\n";
@@ -166,7 +171,7 @@ void payByQR(double& bal){
 void payByToll(double& bal){
 	if (bal < 2.10){
 		cout << "\u001b[1;31mPayment Failed!\u001b[0m Not enough money in your account.\n";
-		return;		
+		return;
 	}
 	cout << "\u001b[1;32mPayment Success!\u001b[0m\n";
 	cout << "Paid RM2.10 for toll.\n";
@@ -188,7 +193,7 @@ void topUp(double& bal){
         cout << "3. Back to Main Menu" << setw(14) << "\n";
         cout << "Choose option: ";
         cin >> option;
-        
+
         try{
             int method = stoi(option);
             switch (method){
@@ -220,7 +225,7 @@ void topUp(double& bal){
 void topUpByBank(double& bal){
     string bankOption, amt, reference;
     string banks[] = {
-        "1. Maybank", "2. CIMB Bank", "3. Public Bank", 
+        "1. Maybank", "2. CIMB Bank", "3. Public Bank",
         "4. RHB Bank", "5. Hong Leong Bank", "6. AmBank",
         "7. OCBC Bank", "8. UOB Bank", "9. Standard Chartered",
         "10. Bank Islam", "11. Back"
@@ -234,7 +239,7 @@ void topUpByBank(double& bal){
         }
         cout << "Choose option: ";
         cin >> bankOption;
-        
+
         if(bankOption == "11") {
             return;
         }
@@ -244,19 +249,19 @@ void topUpByBank(double& bal){
                 cout << "\u001b[1;31mInvalid bank selection. Please choose 1-10 or 11 to go back.\n\u001b[0m";
                 continue;
             }
-            
+
             cout << "Amount to top up: RM";
             cin >> amt;
             cout << "Reference: ";
             cin.ignore();
             getline(cin, reference);
-            
+
             double amount = stod(amt);
             if(amount <= 0){
                 cout << "\u001b[1;31mInvalid amount. Please enter a positive value.\n\u001b[0m";
                 continue;
             }
-            
+
             cout << "Processing bank transfer...\n";
             for(int i = 0; i < 3; i++){
                 cout << "." << flush;
@@ -264,7 +269,7 @@ void topUpByBank(double& bal){
                 std::this_thread::sleep_for(dura);
             }
             cout << endl;
-            
+
             bal += amount;
             cout << "\u001b[1;32mTop-up successful!\u001b[0m\n";
             cout << setprecision(2) << fixed;
@@ -290,16 +295,16 @@ bool topUpByCard(double& bal) {
     string cardNum, amt, expiry, cvv, reference;
     int currentStep = 1;
 
-    cin.ignore(); 
+    cin.ignore();
     cout << "\n--- Top Up by Card ---\n";
     cout << "Enter card details (or 'B' to go back to previous step):\n";
-    
+
     while(true) {
         switch(currentStep) {
             case 1:
                 cout << "Card Number (16 digits): ";
                 getline(cin, cardNum);
-                
+
                 if(cardNum == "B" || cardNum == "b") {
                     return true;
                 }
@@ -309,7 +314,7 @@ bool topUpByCard(double& bal) {
                 }
                 try {
                     stoll(cardNum);
-                    currentStep = 2; 
+                    currentStep = 2;
                 }
                 catch(invalid_argument) {
                     cout << "\u001b[1;31mInvalid card number. Must contain digits only.\n\u001b[0m";
@@ -318,7 +323,7 @@ bool topUpByCard(double& bal) {
                     cout << "\u001b[1;31mCard number is too large.\n\u001b[0m";
                 }
                 break;
-                
+
             case 2:
                 {
                     cout << "Expiry Date (MM/YY format including slash): ";
@@ -337,24 +342,24 @@ bool topUpByCard(double& bal) {
                     try {
                         int month = stoi(monthStr);
                         int year = stoi(yearStr);
-                        
+
                         if(month < 1 || month > 12) {
                             cout << "\u001b[1;31mInvalid month. Please enter a month between 01-12.\n\u001b[0m";
                             continue;
                         }
-                        
-                        currentStep = 3; 
+
+                        currentStep = 3;
                     }
                     catch(...) {
                         cout << "\u001b[1;31mInvalid expiry date. Please use numbers for month and year.\n\u001b[0m";
                     }
                 }
                 break;
-                
+
             case 3:
                 cout << "CVV (3 digits): ";
                 getline(cin, cvv);
-                
+
                 if(cvv == "B" || cvv == "b") {
                     currentStep = 2;
                     continue;
@@ -371,7 +376,7 @@ bool topUpByCard(double& bal) {
                     cout << "\u001b[1;31mInvalid CVV. Must contain digits only.\n\u001b[0m";
                 }
                 break;
-                
+
             case 4:
                 cout << "Amount to top up (RM): ";
                 getline(cin, amt);
@@ -385,7 +390,7 @@ bool topUpByCard(double& bal) {
                         cout << "\u001b[1;31mInvalid amount. Please enter a positive value.\n\u001b[0m";
                         continue;
                     }
-                    currentStep = 5; 
+                    currentStep = 5;
                 }
                 catch(invalid_argument) {
                     cout << "\u001b[1;31mInvalid amount. Please enter a valid number.\n\u001b[0m";
@@ -394,11 +399,11 @@ bool topUpByCard(double& bal) {
                     cout << "\u001b[1;31mAmount is too large.\n\u001b[0m";
                 }
                 break;
-                
+
             case 5:
                 cout << "Reference: ";
                 getline(cin, reference);
-                
+
                 if(reference == "B" || reference == "b") {
                     currentStep = 4;
                     continue;
@@ -427,4 +432,120 @@ bool topUpByCard(double& bal) {
                 break;
         }
     }
+}
+
+void receive(double& bal) {
+    string option;
+    while (true) {
+        cout << "\n--- Receive Menu ---\n";
+        cout << "Select receive method:\n";
+        cout << "1. Receive Any Amount" << setw(30) << "2. Receive Fixed Amount\n";
+        cout << "3. Receive by QR" << setw(19) << "4. Back\n";
+        cout << "Choose option: ";
+        cin >> option;
+
+        try {
+            int method = stoi(option);
+            switch (method) {
+                case 1:
+                    receiveAny(bal);
+                    break;  // Return to main menu after completion
+                case 2:
+                    receiveFixed(bal);
+                    break;
+                case 3:
+                    receiveByQR(bal);
+                    break;
+                case 4:
+                    return;  // Return to main menu
+                default:
+                    cout << "\u001b[1;31mInvalid Option\n\u001b[0m";
+                    cout << "Please select the offered options.\n";
+                    break;
+            }
+        }
+        catch (invalid_argument) {
+            cout << "\u001b[1;31mInvalid Option\n\u001b[0m";
+            cout << "Please select the offered options.\n";
+            cin.clear();
+            cin.ignore(10000, '\n');
+        }
+    }
+}
+
+
+void receiveAny(double& bal){
+	// Generate random amount between 1.00 and 50.00
+	random_device rd;
+	mt19937 gen(rd());
+	uniform_real_distribution<> dis(1.0, 50.0);
+	double amount = round(dis(gen) * 100) / 100; // Round to 2 decimal places
+
+	cout << "Generating random amount...\n";
+	std::chrono::milliseconds dura(1000);
+	std::this_thread::sleep_for(dura);
+
+	bal += amount;
+	cout << "\u001b[1;32mReceived RM" << fixed << setprecision(2) << amount << "\u001b[0m\n";
+	cout << "New balance: RM" << fixed << setprecision(2) << bal << endl;
+}
+
+void receiveFixed(double& bal){
+	string amt;
+	cout << "Amount to receive: RM";
+	cin >> amt;
+
+	try{
+		double amount = stod(amt);
+		if(amount <= 0){
+			cout << "\u001b[1;31mInvalid amount. Please enter a positive value.\n\u001b[0m";
+			return;
+		}
+
+		bal += amount;
+		cout << "\u001b[1;32mReceived RM" << fixed << setprecision(2) << amount << "\u001b[0m\n";
+		cout << "New balance: RM" << fixed << setprecision(2) << bal << endl;
+	}
+	catch(invalid_argument){
+		cout << "\u001b[1;31mInvalid amount. Please enter a valid number.\n\u001b[0m";
+	}
+	catch(out_of_range){
+		cout << "\u001b[1;31mAmount is too large.\n\u001b[0m";
+	}
+}
+
+void receiveByQR(double& bal){
+	string amt;
+	string load[] = {"‾‾‾","———","___"};
+
+	cout << "Amount to receive: RM";
+	cin >> amt;
+
+	try{
+		double amount = stod(amt);
+		if(amount <= 0){
+			cout << "\u001b[1;31mInvalid amount. Please enter a positive value.\n\u001b[0m";
+			return;
+		}
+
+		cout << "Displaying QR code for 5 seconds\n";
+		for (int j = 0; j < 10; j++){
+			for (int i = 0; i < 3; i++){
+				cout << "[" << load[i] << "]\r";
+				fflush(stdout);
+				std::chrono::milliseconds dura(500); // 0.5 second delay
+				std::this_thread::sleep_for(dura);
+			}
+		}
+
+		bal += amount;
+		cout << "\u001b[1;32mReceived RM" << fixed << setprecision(2) << amount << "\u001b[0m\n";
+		cout << "New balance: RM" << fixed << setprecision(2) << bal << endl;
+	}
+	catch(invalid_argument){
+		cout << "\u001b[1;31mInvalid amount. Please enter a valid number.\n\u001b[0m";
+	}
+	catch(out_of_range){
+		cout << "\u001b[1;31mAmount is too large.\n\u001b[0m";
+	}
 }
