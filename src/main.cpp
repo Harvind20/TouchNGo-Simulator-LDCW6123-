@@ -87,13 +87,24 @@ void payment(double& bal){
 
 void payByPhone(double& bal){
 	string pNum,amt,reference;
-	cout << "Phone Number: ";
+	cout << "Phone Number(begins with 601): ";
 	cin >> pNum;
 	cout << "Amount: ";
 	cin >> amt;
 	cout << "Reference: ";
 	cin.ignore();
 	getline(cin,reference);
+
+	if (!(pNum.at(0) == '6' && pNum.at(1) == '0' && pNum.at(2) == '1')){
+		cout << "\u001b[1;31mInvalid Number\n\u001b[0m";
+		cout << "Please input a Malaysian Number.\n";		
+		return;
+	}
+	else if (!(pNum.size() == 11)){
+		cout << "\u001b[1;31mInvalid Number\n\u001b[0m";
+		cout << "Invalid Number of digits. Please input a Malaysian Number.\n";
+		return;
+	}
 
 	double phoneNumber = stod(pNum);
 	double amount = stod(amt);
