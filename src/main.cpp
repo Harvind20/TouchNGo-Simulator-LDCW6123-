@@ -136,7 +136,7 @@ void payByPhone(double& bal){
 
 void payByQR(double& bal){
 	string amt,reference;
-	string load[] = {"‾‾‾","———","___"};
+	string load[] = {"/","-","\\","|"};
 
 	cout << "Amount: ";
 	cin >> amt;
@@ -152,11 +152,11 @@ void payByQR(double& bal){
 		return;
 	}
 	cout << "Scanning QR\n";
-	for (int j = 0; j<10; j++){
-		for (int i = 0;i < 3;i++){
+	for (int j = 0; j<8; j++){
+		for (int i = 0;i < 4;i++){
 			cout << "[" << load[i] << "]\r";
 			fflush(stdout);
-			std::chrono::milliseconds dura(150);
+			std::chrono::milliseconds dura(100);
 			std::this_thread::sleep_for(dura);
 		}
 	}
@@ -527,7 +527,7 @@ void receiveFixed(double& bal){
 
 void receiveByQR(double& bal){
 	string amt;
-	string load[] = {"‾‾‾","———","___"};
+	string load[] = {"/","-","\\","|"};
 
 	cout << "Amount to receive: RM";
 	cin >> amt;
@@ -539,12 +539,12 @@ void receiveByQR(double& bal){
 			return;
 		}
 
-		cout << "Displaying QR code for 5 seconds\n";
+		cout << "Displaying QR code\n";
 		for (int j = 0; j < 10; j++){
-			for (int i = 0; i < 3; i++){
+			for (int i = 0; i < 4; i++){
 				cout << "[" << load[i] << "]\r";
 				fflush(stdout);
-				std::chrono::milliseconds dura(500); // 0.5 second delay
+				std::chrono::milliseconds dura(100); // 0.5 second delay
 				std::this_thread::sleep_for(dura);
 			}
 		}
